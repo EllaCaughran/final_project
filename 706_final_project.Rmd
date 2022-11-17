@@ -1,0 +1,37 @@
+---
+title: "706 Final Project"
+author: "Ella Caughran"
+date: "10/27/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+maybe I need to make a function of how each variable changes over time????
+```{r setup, include=FALSE}
+library(ggplot2)
+
+lowfat_dehydration <- read.csv("lowfat_dehydration_rep2.csv", stringsAsFactors = TRUE)
+
+View(lowfat_dehydration)
+
+```
+
+```{r cleaning data, include=FALSE}
+
+
+```
+
+```{r creating plots of variables over time, include=FALSE}
+
+
+
+
+activity_plot <- ggplot(data = lowfat_dehydration, aes(x = time, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Activity")
+
+activity_trend <- activity_plot + stat_smooth()
+
+```
