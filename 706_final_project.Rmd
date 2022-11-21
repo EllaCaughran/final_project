@@ -9,9 +9,19 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-maybe I need to make a function of how each variable changes over time????
-```{r setup, include=FALSE}
+```{r loading packages, include=FALSE}
+
 library(ggplot2)
+library(lubridate)
+library(dplyr)
+
+
+
+```
+
+
+maybe I need to make a function of how each variable changes over time????
+```{r reading in data, include=FALSE}
 
 lowfat_dehydration <- read.csv("lowfat_dehydration_rep2.csv", stringsAsFactors = TRUE)
 
@@ -20,18 +30,50 @@ View(lowfat_dehydration)
 ```
 
 ```{r cleaning data, include=FALSE}
+lowfat_dehydration$date <- ymd(lowfat_dehydration$date)
+class(lowfat_dehydration$date)
 
+lowfat_dehydration$DateTime <- ymd_hms(lowfat_dehydration$DateTime)
+class(lowfat_dehydration$DateTime)
+
+lowfat_dehydration$time <- hms(lowfat_dehydration$time)
+class(lowfat_dehydration$time)
 
 ```
 
 ```{r creating plots of variables over time, include=FALSE}
 
+# create plot of activity over time during baseline period
+data_10_28 = filter(lowfat_dehydration, date == "2022-10-28")
 
-
-
-activity_plot <- ggplot(data = lowfat_dehydration, aes(x = time, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
+activity_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
   labs(x = "Time", y = "Activity")
 
-activity_trend <- activity_plot + stat_smooth()
+activity_plot_10_28 
+
+# create plot of metabolism over time during baseline period
+
+metabolism_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Metabolic Rate")
+
+metabolism_plot_10_28
+
+# create a plot of activity over time after dehydration period
+
+data_11_01 = filter(lowfat_dehydration, date == "2022-11-01")
+
+activity_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Activity")
+
+activity_plot_11_01 
+
+# create a plot of metabolism over time after dehydration period
+
+metabolism_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Metabolic Rate")
+
+metabolism_plot_11_01 
+
+
 
 ```
