@@ -2,7 +2,10 @@
 title: "706 Final Project"
 author: "Ella Caughran"
 date: "10/27/2022"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -20,8 +23,7 @@ library(dplyr)
 ```
 
 
-maybe I need to make a function of how each variable changes over time????
-```{r reading in data, include=FALSE}
+```{r reading in data, echo=FALSE}
 
 lowfat_dehydration <- read.csv("lowfat_dehydration_rep2.csv", stringsAsFactors = TRUE)
 
@@ -29,7 +31,7 @@ View(lowfat_dehydration)
 
 ```
 
-```{r cleaning data, include=FALSE}
+```{r cleaning data, echo=FALSE}
 lowfat_dehydration$date <- ymd(lowfat_dehydration$date)
 class(lowfat_dehydration$date)
 
@@ -39,22 +41,24 @@ class(lowfat_dehydration$DateTime)
 lowfat_dehydration$time <- hms(lowfat_dehydration$time)
 class(lowfat_dehydration$time)
 
+lowfat_dehydration$Animal_ID <- as.character(lowfat_dehydration$Animal_ID)
+class(lowfat_dehydration$Animal_ID)
+
 ```
 
-```{r creating plots of variables over time, include=FALSE}
+```{r creating plots of variables over time, echo=FALSE}
 
 # create plot of activity over time during baseline period
-data_10_28 = filter(lowfat_dehydration, date == "2022-10-28")
+data_10_28 <- filter(lowfat_dehydration, date == "2022-10-28")
 
-activity_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Activity")
+activity_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Activity", caption="Plot of activity over 24 hours during base conditions. Each individual is represented by a different color")
 
 activity_plot_10_28 
 
 # create plot of metabolism over time during baseline period
 
-metabolism_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Metabolic Rate")
+metabolism_plot_10_28 <- ggplot(data = data_10_28, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Metabolic Rate", caption="Plot of metabolism over 24 hours during base conditions. Each individual is represented by a different color")
+
 
 metabolism_plot_10_28
 
@@ -62,17 +66,47 @@ metabolism_plot_10_28
 
 data_11_01 = filter(lowfat_dehydration, date == "2022-11-01")
 
-activity_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Activity")
+activity_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Activity", caption="Plot of activity over 24 hours on day 2 of dehydration conditions. Each individual is represented by a different color")
 
 activity_plot_11_01 
 
 # create a plot of metabolism over time after dehydration period
 
-metabolism_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Metabolic Rate")
+metabolism_plot_11_01 <- ggplot(data = data_11_01, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + 
+  labs(x = "Time", y = "Metabolic Rate", caption="Plot of metabolism over 24 hours on day 2 of dehydration conditions. Each individual is repredented by a different color")
+
 
 metabolism_plot_11_01 
+
+```
+
+
+```{r making and plotting regression models, echo=FALSE}
+
+# making a regression plot of how activity relates to metabolism over the entire period of the study
+activity_metabolism_mod <- lm(data = lowfat_dehydration, formula = EE ~ Activity)
+modsum1 <- summary(activity_metabolism_mod)
+
+ggplot(data = lowfat_dehydration, aes(x = EE, y = Activity, color = Animal_ID)) +
+  geom_point()+
+  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship between activity and metabolism over all 6 days in all 7 individuals")
+
+# making a regression plot of how activity relates to metabolism in the baseline period
+actmetmod_10_28 <- lm(data = data_10_28, formula = EE ~ Activity)
+modsum2 <- summary(actmetmod_10_28)
+
+ggplot(data = data_10_28, aes(x = EE, y = Activity, color = Animal_ID)) +
+  geom_point()+
+  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship between activity and metabolism over 24 hours during baseline conditions in all 7 individuals")
+
+# making a regression plot of how activity relates to metabolism after 2 days of dehydration
+actmetmod_11_01 <- lm(data = data_11_01, formula = EE ~ Activity)
+modsum2 <- summary(actmetmod_11_01)
+
+ggplot(data = data_11_01, aes(x = EE, y = Activity, color = Animal_ID)) +
+  geom_point()+
+  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship between activity and metabolism over 24 hours on day 2 of dehydration in all 7 individuals")
 
 
 
