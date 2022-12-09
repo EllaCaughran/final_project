@@ -1,7 +1,7 @@
 ---
 title: "706 Final Project"
 author: "Ella Caughran"
-date: "10/27/2022"
+date: "12/08/2022"
 output:
   pdf_document: default
   html_document:
@@ -13,13 +13,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 Introduction:
 
-  The experimental subjects that these data were collected from were of the species Peromyscus eremicus, colloquially known as the cactus mouse. This species is native to the desert in the southwestern United States and is an ideal model organism for studying dehydration as these desert rodents are adapted to low water environments and are able to remarkably manage their solute and water balance and avoid cellular and, on the organ level, kidney damage as a result of dehydration. Though we know that these rodents are adapted to low water conditions, it is not fully understood how physiologically they deal with this lack of water, or the beahvioral and physiological changes that occur as a result of dehydration. This research is important for better understanding dehydration in humans as, with climate change, water is likely to become a scarcer and scarcer resource. I sought out to understand the relationship between metabolic rate and activity, both under baseline and dehydrated conditions, how activity and metabolism changed over the course of the dehydration period, and how/if the response of activity and metabolic rate to dehydration differed on the basis of sex. 
+The experimental subjects that these data were collected from were of the species Peromyscus eremicus, colloquially known as the cactus mouse. This species is native to the desert in the southwestern United States and is an ideal model organism for studying dehydration as these desert rodents are adapted to low water environments and are able to remarkably manage their solute and water balance and avoid cellular and, on the organ level, kidney damage as a result of dehydration (Kordonowy and MacManes, 2017). Though we know that these rodents are adapted to low water conditions, it is not fully understood how physiologically they deal with this lack of water, or the behavioral and physiological changes that occur as a result of dehydration (Kordonowy and MacManes, 2017). This research is important for better understanding dehydration in humans as, with climate change, water is likely to become a scarcer and scarcer resource (Kordonowy and MacManes, 2017). I sought out to understand the relationship between metabolic rate and activity, both under baseline and dehydrated conditions, how activity and metabolism changed over the course of the dehydration period, and how/if the response of activity and metabolic rate to dehydration differed on the basis of sex. 
  
  
 Methods:
-    The data I will be using has been collected over the course of six days between October 27th and November 2nd of 2022. Data was sampled from 7 individuals and one baseline cage that was used to gather baseline data on cage conditions such as O2 concentration, CO2 concentration, and temperature throughout the experiment. For the first three days (October 27th – October 30th) baseline data was established for all the mice on all data types collected such as metabolic rate, activity, weight etc. During this time the mice had free access to water and were fed a low-fat diet. After three days, water was removed, and over the next three days (October 31st – November 2nd) data was collected as the mice dehydrated. Data was sampled continuously over the course of the six days in a pattern of, random cage: baseline cage, random cage: baseline cage, so that experimental cages always had the baseline sampled between them and the experimental cage sampled was always random. Each time a cage was sampled, data was collected for two minutes straight before immediately moving onto the next cage to be sampled. Data on activity, metabolic rate, water loss, temperature, and CO2 expelled were collected. 
+
+The data I will be using has been collected over the course of six days between October 27th and November 2nd of 2022. Data was sampled from 7 individuals and one baseline cage that was used to gather baseline data on cage conditions such as O2 concentration, CO2 concentration, and temperature throughout the experiment. For the first three days (October 27th – October 30th) baseline data was established for all the mice on all data types collected such as metabolic rate, activity, weight etc. During this time the mice had free access to water and were fed a low-fat diet. After three days, water was removed, and over the next three days (October 31st – November 2nd) data was collected as the mice dehydrated. Data was sampled continuously over the course of the six days in a pattern of, random cage: baseline cage, random cage: baseline cage, so that experimental cages always had the baseline sampled between them and the experimental cage sampled was always random. Each time a cage was sampled, data was collected for two minutes straight before immediately moving onto the next cage to be sampled. Data on activity, metabolic rate, water loss, temperature, and CO2 expelled were collected. 
   
-  After being imported into R, the data were cleaned. The packages that were used for data cleaning, plotting, and analysis were: ggplot2, lubridate, and dplyr. The date, DateTime, and time columns were converted to date objects using the lubridate package and the timezone of DateTime was converted to the correct timezone(EST) also using the Lubridate package. Lastly, the AnimalID column was changed from a numeric data type to character so that it would be be recognized as an identifier rather than a value by R. The questions being addressed in this study were: How do activity and metabolic rate change over the course of the dehydration period? What is the relationship between metabolic rate and activity and how does it change over the course of acute dehydration? Does the change in activity and metabolism over the dehydration period differ on the basis of sex? I addressed these questions by first building plots of activity and metabolism over time in 24 hour periods, first during the first day of baseline conditions, then during the last day of dehydration (day 6) using ggplot2. Next, linear regressions were performed and plotted, examining the relationship between activity and metabolic rate over the entire 6 days of the experiment, over the baseline period, and over day 4, 5, and 6 seperately (the 3 days of the dehydration period) also using ggplot2. Lastly, violin plots were built of activity and metabolic rate, segregated by sex, for the duration of the study, the baseline period, and day 6 of the study also using the ggplot2 package. 
+After being imported into R, the data were cleaned. The packages that were used for data cleaning, plotting, and analysis were: ggplot2, lubridate, and dplyr. The date, DateTime, and time columns were converted to date objects using the lubridate package and the timezone of DateTime was converted to the correct timezone(EST) also using the Lubridate package. Lastly, the AnimalID column was changed from a numeric data type to character so that it would be be recognized as an identifier rather than a value by R. The questions being addressed in this study were: How do activity and metabolic rate change over the course of the dehydration period? What is the relationship between metabolic rate and activity and how does it change over the course of acute dehydration? Does the change in activity and metabolism over the dehydration period differ on the basis of sex? I addressed these questions by first building plots of activity and metabolism over time in 24 hour periods, first during the first day of baseline conditions, then during the last day of dehydration (day 6) using ggplot2. Next, linear regressions were performed and plotted, examining the relationship between activity and metabolic rate over the entire 6 days of the experiment, over the baseline period, and over day 4, 5, and 6 seperately (the 3 days of the dehydration period) also using ggplot2. Lastly, violin plots were built of activity and metabolic rate, segregated by sex, for the duration of the study, the baseline period, and day 6 of the study also using the ggplot2 package. 
 
 ```{r loading packages, include=FALSE}
 
@@ -50,10 +51,9 @@ lowfat_dehydration$time <- hms(lowfat_dehydration$time)
 lowfat_dehydration$Animal_ID <- as.character(lowfat_dehydration$Animal_ID)
 
 ```
-Results: 
 
 
-  
+Results:
 
 ```{r creating plots of variables over time, echo=FALSE}
 
@@ -65,15 +65,15 @@ datetime.range1 <- interval(as.POSIXct("2022-10-27 12:00:00"),
 
 data_d1 <- lowfat_dehydration[lowfat_dehydration$DateTime %within% datetime.range1,]
 
-activity_plot_day1 <- ggplot(data = data_d1, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Activity", caption="Plot of activity over 24 hours during base conditions. 
-                                                                                                                                                                                                                  Each individual is represented by a different color")
+activity_plot_day1 <- ggplot(data = data_d1, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Activity",                       caption="Figure 1. Plot of activity over 24 hours during base conditions. Each individual is represented by a 
+different color") + theme(plot.caption = element_text(hjust=0))
 
 activity_plot_day1
 
 # create plot of metabolism over time during baseline period
 
-metabolism_plot_day1 <- ggplot(data = data_d1, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Metabolic Rate", caption="Plot of metabolism over 24 hours during base conditions. 
-                                                                                                                                                                                                              Each individual is represented by a different color")
+metabolism_plot_day1 <- ggplot(data = data_d1, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + labs(x = "Time", y = "Metabolic Rate (EE)", caption="Figure 2. Plot of metabolism over 24 hours during base conditions. Each individual is represented by 
+a different color") + theme(plot.caption = element_text(hjust=0))
 
 
 metabolism_plot_day1
@@ -87,16 +87,16 @@ datetime.range2 <- interval(as.POSIXct("2022-11-01 12:00:00"),
 data_d6 <- lowfat_dehydration[lowfat_dehydration$DateTime %within% datetime.range2,]
 
 activity_plot_d6 <- ggplot(data = data_d6, aes(x = DateTime, y = Activity, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Activity", caption="Plot of activity over 24 hours on day 3 of dehydration conditions. 
-       Each individual is represented by a different color")
+  labs(x = "Time", y = "Activity", caption="Figure 3. Plot of activity over 24 hours on day 3 of dehydration conditions. Each individual is represented by
+a different color") + theme(plot.caption = element_text(hjust=0))
 
 activity_plot_d6
 
 # create a plot of metabolism over time after dehydration period
 
 metabolism_plot_d6 <- ggplot(data = data_d6, aes(x = DateTime, y = EE, color = Animal_ID)) + geom_point() + geom_line(aes(group = Animal_ID)) + theme_classic() + theme(legend.position = 'top') + 
-  labs(x = "Time", y = "Metabolic Rate", caption="Plot of metabolism over 24 hours on day 2 of dehydration conditions. 
-       Each individual is repredented by a different color")
+  labs(x = "Time", y = "Metabolic Rate (EE)", caption="Figure 4. Plot of metabolism over 24 hours on day 2 of dehydration conditions. Each individual is represented 
+by a different color") + theme(plot.caption = element_text(hjust=0))
 
 
 metabolism_plot_d6 
@@ -104,15 +104,9 @@ metabolism_plot_d6
 ```
 
 
+The plotting of activity over time during the baseline period and on day 6 (fig 1., fig 3.) demonstrated that activity was lower after 3 days of dehydration and was more erratic, whereas activity during the baseline period followed a clear pattern of high activity during the night and low activity during the day. This pattern of daily activity and inactivity is to be expected for the cactus mouse as they are nocturnal. It also makes sense that the mice would become less active the more dehydrated they become as a potential strategy for conserving water. Metabolic rate also follows a similar trend as seen in figure 2 and 4, where during the baseline period it is high during the night and low during the day, and it is overall lower and more erratic after the dehydration period.
+
 ```{r making and plotting regression models, echo=FALSE}
-
-# making a regression plot of how activity relates to metabolism over the entire period of the study
-activity_metabolism_mod <- lm(data = lowfat_dehydration, formula = EE ~ Activity)
-modsum1 <- summary(activity_metabolism_mod)
-
-ggplot(data = lowfat_dehydration, aes(x = EE, y = Activity)) +
-  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship 
-                                    between activity and metabolism over all 6 days in all 7 individuals")
 
 # making a regression plot of how activity relates to metabolism in the baseline period
 
@@ -125,9 +119,9 @@ data_baseline <- lowfat_dehydration[lowfat_dehydration$DateTime %within% datetim
 actmetmod_baseline <- lm(data = data_baseline, formula = EE ~ Activity)
 modsum2 <- summary(actmetmod_baseline)
 
-ggplot(data = data_baseline, aes(x = EE, y = Activity)) +
-  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship 
-                                    between activity and metabolism over 3 day baseline period in all 7 individuals")
+ggplot(data = data_baseline, aes(x = Activity, y = EE)) +
+  geom_smooth(method = 'lm') + labs(x = "Activity", y = "Metabolic Rate (EE)", caption = "Figure 6. Linear regression of the relationship between activity and metabolism over 3 day baseline period 
+in all 7 individuals") + theme(plot.caption = element_text(hjust=0))
 
 # making a regression plot of how activity related to metabolism on day one of dehydration
 
@@ -141,9 +135,9 @@ data_d4 <- lowfat_dehydration[lowfat_dehydration$DateTime %within% datetime.rang
 actmetmod_dehydrated1 <- lm(data = data_d4, formula = EE ~ Activity)
 modsum3 <- summary(actmetmod_dehydrated1)
 
-ggplot(data = data_d4, aes(x = EE, y = Activity)) +
-  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship 
-                                    between activity and metabolism over 24 hours on day 1 of dehydration in all 7 individuals")
+ggplot(data = data_d4, aes(x = Activity, y = EE)) +
+  geom_smooth(method = 'lm') + labs(x = "Activity", y = "Metabolic Rate (EE)", caption = "Figure 7. Linear regression of the relationship between activity and metabolism over 24 hours on day 1 of 
+dehydration in all 7 individuals") + theme(plot.caption = element_text(hjust=0))
 
 # making a regression plot of how activity related to metabolism on day two of dehydration
 
@@ -157,51 +151,74 @@ data_d5 <- lowfat_dehydration[lowfat_dehydration$DateTime %within% datetime.rang
 actmetmod_dehydrated2 <- lm(data = data_d5, formula = EE ~ Activity)
 modsum4 <- summary(actmetmod_dehydrated2)
 
-ggplot(data = data_d5, aes(x = EE, y = Activity)) +
-  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship 
-                                    between activity and metabolism over 24 hours on day 2 of dehydration in all 7 individuals")
+ggplot(data = data_d5, aes(x = Activity, y = EE)) +
+  geom_smooth(method = 'lm') + labs(x = "Activity", y = "Metabolic Rate (EE)", caption = "Figure 8. Linear regression of the relationship between activity and metabolism over 24 hours on day 2 of 
+dehydration in all 7 individuals") + theme(plot.caption = element_text(hjust=0))
 
 # making a regression plot of how activity relates to metabolism on day 3 days of dehydration
 actmetmod_dehydrated3 <- lm(data = data_d6, formula = EE ~ Activity)
 modsum5 <- summary(actmetmod_dehydrated3)
 
-ggplot(data = data_d6, aes(x = EE, y = Activity)) +
-  geom_smooth(method = 'lm') + labs(x = "Metabolic Rate", y = "Activity", caption = "Linear regression of the relationship 
-                                    between activity and metabolism over 24 hours on day 3 of dehydration in all 7 individuals")
+ggplot(data = data_d6, aes(x = Activity, y = EE)) +
+  geom_smooth(method = 'lm') + labs(x = "Activity", y = "Metabolic Rate (EE)", caption = "Figure 9. Linear regression of the relationship between activity and metabolism over 24 hours on day 3 of 
+dehydration in all 7 individuals") + theme(plot.caption = element_text(hjust=0))
 
 
 
 ```
+The regression models run on the baseline period as well as days 4, 5, & 6 of the study (days 1, 2, & 3 of water removal) yielded interesting results. The regression model run on the baseline period found that for each unit increase in activity, there was a `r round(coef(actmetmod_baseline)[2],5)` `r ifelse(round(coef(actmetmod_baseline)[2],5)>0, 'increase', 'decrease')` in metabolic rate (P=`r coef(modsum2)[2,4]`) for each unit increase in activity, meaning that during the baseline period, the relationship between metabolism and activity was positive and significant (Fig. 6). The regression model run on the relationship between metabolism and activity on day 4 (day 1 of dehydration) found that there was a `r round(coef(actmetmod_dehydrated1)[2],5)` `r ifelse(round(coef(actmetmod_dehydrated1)[2],5)>0, 'increase', 'decrease')` in metabolic rate (P=`r coef(modsum3)[2,4]`) for each unit increase in activity, meaning that the relationship was positive and significant (Fig. 7). Although you can see that on day 1 of dehydration the residuals are further spread from the regression line compared to the baseline period (Fig. 7). The regression model run on day 5 (or day 2 or dehydration) found that there was a `r round(coef(actmetmod_dehydrated2)[2],5)` `r ifelse(round(coef(actmetmod_dehydrated2)[2],5)>0, 'increase', 'decrease')` in metabolic rate (P=`r coef(modsum4)[2,4]`) for each unit increase in activity, meaning that the relationship between activity and metabolism was found to be non-significant (Fig. 8). Additionally the residuals were much further spread from the regression line on day 5 when compared to the plot of the baseline period or day 4 (Fig 8., Fig 6., Fig 7.). The regression model run on day 6 (day 3 of dehydration) found that there was a `r round(coef(actmetmod_dehydrated3)[2],5)` `r ifelse(round(coef(actmetmod_dehydrated3)[2],5)>0, 'increase', 'decrease')` in metabolic rate (P=`r coef(modsum5)[2,4]`) for each unit increase in activity, meaning that there was no significant relationship between activity and metabolism on day 6. additionally the residuals had a spread from the regression line approximately equal to that on day 5 (Fig 8.) and much greater than day 4 and the baseline period (Fig 7., Fig 6.).
+
+
 ```{r making violin plots, echo=FALSE}
 
 lowfat_dehydration$sex <- as.factor(lowfat_dehydration$sex)
 
-violinplot_overall_activity <- ggplot(lowfat_dehydration, aes(x=sex, y=Activity)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Violin plot comparing activity over the duration of the study in males and females")
+violinplot_overall_activity <- ggplot(lowfat_dehydration, aes(x=sex, y=Activity)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = " Figure 10. Violin plot comparing activity over the duration of the study in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_overall_activity
 
-violinplot_baseline_activity <- ggplot(data = data_baseline, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Violin plot comparing activity over the baseline period in males and females")
+violinplot_baseline_activity <- ggplot(data = data_baseline, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Figure 11. Violin plot comparing activity over the baseline period in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_baseline_activity
 
-violin_plot_dehydrated_activity <- ggplot(data_d6, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Violin plot comparing activity on day 3 of dehydration in males and females")
+violin_plot_dehydrated_activity <- ggplot(data_d6, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Figure 12. Violin plot comparing activity on day 3 of dehydration in males and females") + theme(plot.caption = element_text(hjust=0))
 
 
 violin_plot_dehydrated_activity
 
-violinplot_overall_metabolism <- ggplot(lowfat_dehydration, aes(x=sex, y=EE)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Violin plot comparing metabolic activity over the duration of the study in males and females")
+violinplot_overall_metabolism <- ggplot(lowfat_dehydration, aes(x=sex, y=EE)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Figure 13. Violin plot comparing metabolic activity over the duration of the study in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_overall_metabolism
 
-violinplot_baseline_metabolism <- ggplot(data = data_baseline, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metbolic Rate", caption = "Violin plot comparing metabolic activity over the baseline period in males and females")
+violinplot_baseline_metabolism <- ggplot(data = data_baseline, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metbolic Rate", caption = "Figure 14. Violin plot comparing metabolic activity over the baseline period in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_baseline_metabolism
 
-violin_plot_dehydrated_metabolism <- ggplot(data_d6, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Violin plot comparing metabolic activity on day 3 of dehydration in males and females")
+violin_plot_dehydrated_metabolism <- ggplot(data_d6, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Figure 15. Violin plot comparing metabolic activity on day 3 of dehydration in males and females") + theme(plot.caption = element_text(hjust=0))
 
 
 violin_plot_dehydrated_metabolism
 ```
+
+The violin plots also gave interesting insight into differences activity and metabolism on the basis of the sex of the mice. Males had a higher average overall activity than females and a higher average activity during the baseline period, but the activity of males was lower than that of females on day 6 (the 3rds day of dehydration) (Fig 10., Fig 11., Fig 12.). Additionally females had a higher average metabolic rate than males and a higher average metabolic rate during the baseline period as well as on day 6 (Fig 13., Fig 14., Fig 15.). Lastly, the violin plots of metabolic rate showed that before dehydration during the baseline period there is almost an hourglass distribution of metabolic rate with metabolism wither being high or low with less data points for the middle of the distribution. After dehydration on day 6 this changes with the top end of metabolic rates dropping off, and the low end of metabolic rates clearly being the majority (Fig 14., Fig 15.). This trend is even more stark in males than females (Fig 14. Fig 15).
+
+
+
+
+Discussion:
+
+
+The initial plots of activity and metabolism over 24 hour periods revealed that, as expected, the mice followed a nocturnal pattern during the baseline period, but that pattern seemed to deteriorate when the mice were dehydrated (Fig 1., Fig 2., Fig 3., Fig 4.). Additionally after dehydration the mice had lower overall metabolism and activity. Lower activity levels when dehydrated may be a strategy for the mice to conserve water by lowering activities with high metabolic expenditure. The linear regression analyses revealed that the relationship between activity and metabolism was positive and significant during the baseline period and on day 1 of dehydration suggesting that when the mice are not very dehydrated the majority of their metabolic expenditure is due to activity (Fig 6., Fig 7.). This relationship broke down, though, on day 2 and 3 of dehydration where we saw that the relationship became starkly non-significant (Fig 8., Fig 9.). This suggests that when the mice are dehydrated the majority of their metabolic expenditure is going to maintaining basic body processes rather than activity. This aligns with the results from Figure 1, 2, 3, and 4 as they showed reduced activity after dehydration. The violin plots also showed some interesting insight, especially into how water conservation and metabolic activity may differ between males and females. For example, females had a higher overall mean metabolic rate, but males had higher overall mean activity level. This suggests that more of the females metabolic expendature may be directed toward maintaining normal bodily processes than it is for males (Fig 10., Fig 13.). Additionally, The shape of the violin plots of metabolism rate change from an almost hourglass shape in the baseline period to a tapered shape on day 3 of dehydration (Fig 14., Fig 15.). This suggests that the upper end of metabolism dropped off after dehydration and the majority of the samples were focused around the medium to lower end after dehydration which implies lower metabolic activity overall. This trend was seen in both sexes but was more pronounced in males who had more of an hourglass shape for their violin plots to begin with. The plots and analyses I did gave interesting preliminary insight into the relationship between activity, metabolism, and water intake in cactus mice, as well as potential difference in these variables on the basis of sex. But futher research and analysis is required to explore these research questions.
+
+
+References:
+
+Kordonowy, L., and MacManes, M. (2017). Characterizing the reproductive transcriptomic
+  correlates of acute dehydration in males in the desert adapted rodent, Peromyscus
+  eremicus. BMC Genomics, 23:18(1):473. Available 	from: 10.1186/s12864-017-3840-1
+
+
+
 
 
 
