@@ -40,14 +40,20 @@ lowfat_dehydration <- read.csv("lowfat_dehydration_rep2.csv", stringsAsFactors =
 ```
 
 ```{r cleaning data, echo=FALSE}
+
+# changing date to date object using lubridate
 lowfat_dehydration$date <- ymd(lowfat_dehydration$date)
 
+# changing the DateTime to a date object using lubridate
 lowfat_dehydration$DateTime <- ymd_hms(lowfat_dehydration$DateTime)
 
+# correcting the timezone of DateTime with lubridate
 lowfat_dehydration$DateTime <- lubridate::with_tz(lowfat_dehydration$DateTime, "America/New_York")
 
+# changing time to a date object with lubridate
 lowfat_dehydration$time <- hms(lowfat_dehydration$time)
 
+# changing Animal_ID to a character data type
 lowfat_dehydration$Animal_ID <- as.character(lowfat_dehydration$Animal_ID)
 
 ```
@@ -171,29 +177,36 @@ The regression models run on the baseline period as well as days 4, 5, & 6 of th
 
 ```{r making violin plots, echo=FALSE}
 
+# making sex a factor
 lowfat_dehydration$sex <- as.factor(lowfat_dehydration$sex)
 
+# making violin plot of activity during entire duration of study
 violinplot_overall_activity <- ggplot(lowfat_dehydration, aes(x=sex, y=Activity)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = " Figure 10. Violin plot comparing activity over the duration of the study in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_overall_activity
 
+# making violin plot of activity during baseline period
 violinplot_baseline_activity <- ggplot(data = data_baseline, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Figure 11. Violin plot comparing activity over the baseline period in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_baseline_activity
 
+# making a violin plot of activity on day 3 of dehydration
 violin_plot_dehydrated_activity <- ggplot(data_d6, aes(x=sex, y=Activity)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Activity", caption = "Figure 12. Violin plot comparing activity on day 3 of dehydration in males and females") + theme(plot.caption = element_text(hjust=0))
 
 
 violin_plot_dehydrated_activity
 
+# making a violin plot of metabolism over duration of study
 violinplot_overall_metabolism <- ggplot(lowfat_dehydration, aes(x=sex, y=EE)) + geom_violin()+ geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Figure 13. Violin plot comparing metabolic activity over the duration of the study in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_overall_metabolism
 
+# making a violin plot of metabolism over the baseline period
 violinplot_baseline_metabolism <- ggplot(data = data_baseline, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metbolic Rate", caption = "Figure 14. Violin plot comparing metabolic activity over the baseline period in males and females") + theme(plot.caption = element_text(hjust=0))
 
 violinplot_baseline_metabolism
 
+# making a violin plot of metabolism on day 3 of dehydration
 violin_plot_dehydrated_metabolism <- ggplot(data_d6, aes(x=sex, y=EE)) + geom_violin() + geom_boxplot(width=0.1) + labs(x = "Sex", y = "Metabolic Rate", caption = "Figure 15. Violin plot comparing metabolic activity on day 3 of dehydration in males and females") + theme(plot.caption = element_text(hjust=0))
 
 
